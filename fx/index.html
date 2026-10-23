@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Почему 10% результата за деньги это норм, а бесплатно это скам?</title>
+<meta name="description" content="5 лет запусков и честное сравнение курсов с форекс-аффилиатом. Где двойные стандарты и на чьей стороне правда.">
+<meta name="author" content="Данил">
+
+<!-- Превью в Telegram. домен ganeev.space -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Данил">
+<meta property="og:title" content="Почему 10% результата за деньги это норм, а бесплатно это скам?">
+<meta property="og:description" content="5 лет запусков и честное сравнение курсов с форекс-аффилиатом.">
+<meta property="og:url" content="https://ganeev.space/fx/">
+<meta property="og:image" content="https://ganeev.space/fx/cover.jpg">
+<meta property="article:author" content="Данил">
+<meta property="article:published_time" content="2026-10-23T12:00:00+03:00">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Unbounded:wght@500;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Тёмная «торговая» подложка для шапки, светлый лист для чтения.
+   Красный = модель курсов, зелёный = наша модель, как свечи на графике. */
+:root{
+  --ink:#0e1418; --ink-2:#17212a; --on-ink:#e9eef2; --on-ink-mute:#8fa1ae;
+  --bg:#eef1f3; --paper:#ffffff; --fg:#1a2228; --muted:#5f6d78; --line:#dfe5e9;
+  --up:#13a36f; --up-soft:#e3f5ee; --down:#d6455d; --down-soft:#fbe9ec; --accent:#13a36f;
+  --display:"Unbounded","Golos Text",system-ui,sans-serif;
+  --body:"Golos Text",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#0b1014; --paper:#141b21; --fg:#e4eaee; --muted:#93a3af; --line:#25313a;
+  --up:#2fd08f; --up-soft:#11291f; --down:#ff6b80; --down-soft:#2c161b; --accent:#2fd08f; color-scheme:dark}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 var(--body);-webkit-font-smoothing:antialiased}
+
+.progress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--accent);z-index:20}
+
+/* Шапка */
+.hero{background:var(--ink);color:var(--on-ink);position:relative;overflow:hidden;
+  padding:72px max(20px,env(safe-area-inset-right)) 120px max(20px,env(safe-area-inset-left))}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.35;pointer-events:none}
+.hero-in{position:relative;max-width:760px;margin:0 auto}
+.tag{display:inline-flex;gap:8px;align-items:center;font:500 13px var(--mono);letter-spacing:.06em;text-transform:uppercase;
+  color:var(--on-ink-mute);border:1px solid #2a3843;border-radius:999px;padding:6px 12px}
+.tag i{width:7px;height:7px;border-radius:50%;background:var(--up);display:block}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(1.9rem,5.6vw,3.1rem);line-height:1.15;letter-spacing:-.01em;
+  text-wrap:balance;margin:22px 0 0}
+h1 .down{color:#ff6b80} h1 .up{color:#2fd08f}
+.byline{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:28px;color:var(--on-ink-mute);font-size:15px}
+.avatar{width:42px;height:42px;border-radius:50%;background:var(--ink-2);border:1px solid #2a3843;display:grid;place-items:center;
+  font:700 16px var(--display);color:var(--on-ink)}
+.byline b{color:var(--on-ink);font-weight:600}
+.dot{opacity:.5}
+
+/* Цифры в шапке */
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:40px}
+.stat{background:var(--ink-2);border:1px solid #24323c;border-radius:12px;padding:14px 16px}
+.stat .v{font:700 clamp(1.1rem,3.6vw,1.6rem) var(--display);font-variant-numeric:tabular-nums}
+.stat .l{font-size:13px;color:var(--on-ink-mute);line-height:1.4;margin-top:4px}
+.stat.down .v{color:#ff6b80} .stat.up .v{color:#2fd08f}
+@media (max-width:520px){.stats{grid-template-columns:1fr}}
+
+/* Лист со статьёй */
+main{padding:0 max(14px,env(safe-area-inset-right)) 64px max(14px,env(safe-area-inset-left))}
+article{max-width:760px;margin:-72px auto 0;background:var(--paper);border:1px solid var(--line);border-radius:18px;
+  padding:48px clamp(20px,6vw,64px);position:relative;box-shadow:0 20px 50px -30px rgba(10,20,30,.35)}
+article header{display:none}
+.lead{font-size:1.18em;line-height:1.6}
+h2{font-family:var(--display);font-weight:700;font-size:clamp(1.25rem,3.4vw,1.6rem);line-height:1.3;text-wrap:balance;
+  margin:56px 0 18px;display:flex;gap:12px;align-items:baseline}
+h2 .n{font:500 14px var(--mono);color:var(--accent);flex:none}
+h3{font-size:1.05rem;font-weight:700;margin:0 0 8px}
+p{margin:0 0 18px}
+ul.perks{list-style:none;padding:0;margin:4px 0 24px;display:grid;gap:8px}
+ul.perks li{display:flex;gap:12px;align-items:flex-start;background:var(--up-soft);border-radius:10px;padding:10px 14px;line-height:1.5}
+ul.perks li::before{content:"";flex:none;width:8px;height:8px;margin-top:9px;border-radius:2px;background:var(--up)}
+
+.objection{border:1px solid var(--line);border-radius:14px;padding:20px 22px 4px;margin:0 0 16px}
+.objection h3{display:flex;gap:10px;align-items:baseline}
+.objection h3::before{content:"?";font:700 14px var(--mono);color:var(--down);flex:none}
+
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:8px 0 26px}
+@media (max-width:620px){.vs{grid-template-columns:1fr}}
+.vs blockquote{margin:0;border-radius:14px;padding:18px 20px;line-height:1.55;position:relative}
+.vs blockquote p{margin:0}
+.vs blockquote::before{display:block;font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.vs .bad{background:var(--down-soft);border:1px solid color-mix(in srgb,var(--down) 30%,transparent)}
+.vs .bad::before{content:"▼ Курс за 200-400к";color:var(--down)}
+.vs .good{background:var(--up-soft);border:1px solid color-mix(in srgb,var(--up) 30%,transparent)}
+.vs .good::before{content:"▲ Аффилиат, бесплатно";color:var(--up)}
+
+.punch{font-family:var(--display);font-weight:500;font-size:1.15rem;line-height:1.45;text-wrap:balance;
+  border-left:3px solid var(--accent);padding-left:18px;margin:26px 0}
+
+.final{margin-top:40px;background:var(--ink);color:var(--on-ink);border-radius:16px;padding:28px clamp(20px,4vw,34px)}
+.final p{margin:0 0 12px} .final p:last-child{margin:0}
+.final .big{font:700 clamp(1.6rem,5vw,2.4rem) var(--display);color:#2fd08f;font-variant-numeric:tabular-nums;display:block;margin:6px 0}
+
+footer{max-width:760px;margin:28px auto 0;display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center;color:var(--muted);font-size:15px}
+.btn{display:inline-block;background:var(--accent);color:#06140e;font-weight:600;text-decoration:none;border-radius:10px;padding:12px 20px}
+.btn:focus-visible{outline:3px solid var(--fg);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero canvas{display:none}}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<section class="hero" aria-hidden="false">
+  <canvas id="candles" aria-hidden="true"></canvas>
+  <div class="hero-in">
+    <span class="tag"><i></i>Мнение · Инфобиз vs аффилиат</span>
+    <h1>Почему <span class="down">10% результата</span> за деньги это норм, а <span class="up">бесплатно</span> это скам?</h1>
+    <div class="byline"><span class="avatar">Д</span><span><b>Данил</b></span><span class="dot">•</span><time datetime="2026-10-23">23 октября 2026</time><span class="dot">•</span><span>5 минут</span></div>
+  </div>
+</section>
+
+<main>
+<article>
+<header>
+<h1>Почему 10% результата за деньги это норм, а бесплатно это скам?</h1>
+</header>
+
+<p class="lead">Я 5 лет делал запуски. 50+ проектов. Наставничества для бизнесменов, профессии, эксперты, трейдинг, всё что угодно. Я и сейчас продаю курсы и считаю это нормальным бизнесом.</p>
+<p>Но за эти годы я очень хорошо понял одну вещь, о которой в инфобизе не принято говорить вслух.</p>
+
+<h2><span class="n">01</span>Правда про курсы</h2>
+<p>До результата доходит 10-20% учеников. И это хорошая цифра. На многих курсах она ещё ниже.</p>
+<p>То есть из 100 человек, которые заплатили, 80-90 результат не получат. Кто-то не дошёл до конца, кто-то не применил. У кого-то это просто не его. Но деньги заплатили все. И многие ещё 2-3 года платят рассрочку за то, что им не помогло.</p>
+<p>При этом никто не называет это скамом. Это рынок. Человек сам выбрал, сам отвечает за свой результат. Сделать запуск по трейдингу на 50-100 миллионов на аудиторию мамочек? Красавчики, кейс в портфолио.</p>
+<p>И кстати, за 150к сейчас нормальный курс уже даже не купишь. Все давно поставили ценники по 200, 300, 400 тысяч. Не потому, что так высоко оценили свои знания. А потому, что нужно собрать кассу побольше. А как человек потом полжизни будет мучиться с кредитом на 400 тысяч, их уже не волнует.</p>
+
+<h2><span class="n">02</span>Теперь смотрим на форекс-аффилиат</h2>
+<p>Человек приходит к нам и не платит ни рубля. Вообще. Он получает:</p>
+<ul class="perks">
+<li>обучение</li>
+<li>эфиры с трейдерами</li>
+<li>аналитику от наших трейдеров</li>
+<li>личного куратора, которому можно задать любой вопрос</li>
+<li>скоро углублённый курс, тоже бесплатно</li>
+</ul>
+<p>Если он учится, соблюдает риск-менеджмент и не лудит, он может зарабатывать. И таких, по моим наблюдениям, больше, чем на типичном платном курсе.</p>
+<p>Если сливает, он теряет свой депозит. Ровно так же, как потерял бы его, если бы сам пошёл к брокеру. Или после курса за 300к. Только без этих 300к сверху.</p>
+<p class="punch">И вот здесь все такие: «фу, скам».</p>
+
+<h2><span class="n">03</span>Возражения, которые я слышу чаще всего</h2>
+<section class="objection">
+<h3>«Вы зарабатываете на том, что люди сливают»</h3>
+<p>Нет. Это главный миф. Нам платят за депозит и выполнение квалификации, то есть определённый объём торгов. Всё. Слил человек или заработал, выплата одна и та же.</p>
+<p>А теперь подумайте. Если человек слил за два дня, он ушёл. Если он учится, торгует аккуратно и остаётся с нами, он делает додепы, приводит друзей, остаётся в комьюнити. Нам в прямом смысле выгодно, чтобы люди не сливали. Поэтому мы и вкладываем время, деньги и людей в обучение, которое отдаём бесплатно.</p>
+</section>
+<section class="objection">
+<h3>«Там рисуют графики»</h3>
+<p>Я тоже об этом слышал. Поэтому не стал верить на слово, а пошёл и проверил. Несколько раз сверял котировки с другими брокерами и поставщиками данных. Один в один. Никакой магии.</p>
+</section>
+<section class="objection">
+<h3>«Ну это же трейдинг, там все сливают»</h3>
+<p>Риск есть, я этого никогда не скрывал. Сегодня у нас два слива. Оба человека сами написали, что залудили и забили на риск-менеджмент.</p>
+<p>Но давайте честно. Риск есть везде. Человек после курса по бизнесу открывает бизнес и может прогореть и остаться в огромных долгах. После курса по профессии может не найти клиентов. После курса по трейдингу может слить.</p>
+<p>Разница только в том, что там он сначала заплатил за обучение, а потом рискует. А у нас он рискует только своим депозитом. И при этом рядом с ним куратор, трейдеры и комьюнити.</p>
+</section>
+
+<h2><span class="n">04</span>Сложим всё вместе</h2>
+<div class="vs">
+<blockquote class="bad"><p>В одной модели человек платит 200-400к, и в лучшем случае каждый пятый получает результат. Остальные остаются с рассрочкой на годы. Это называют успешным запуском.</p></blockquote>
+<blockquote class="good"><p>В другой модели человек не платит ничего, получает всю ту же поддержку, и шансов на результат у него больше. Это называют скамом.</p></blockquote>
+</div>
+<p>Я был по обе стороны. Я делал запуски на миллионы и знаю их изнутри. Сейчас я делаю аффилиат и тоже знаю его изнутри. И если честно сравнивать, вопрос «что из этого скам» звучит, мягко говоря, странно.</p>
+<p class="punch">Я не говорю, что курсы это плохо. Я говорю, что двойные стандарты это глупо.</p>
+
+<h2><span class="n">05</span>Прежде чем говорить «скам»</h2>
+<p>Большинство из тех, кто кричит «фу», ни разу не открывали кабинет брокера, не видели, как устроены выплаты, и не разговаривали ни с одним человеком внутри. Они просто повторяют чужое мнение про то, что аффилиат это скам. А дальше продолжают продавать курсы с результативностью 10%.</p>
+<p>И я видел, как это продаётся изнутри. Как отделы продаж дожимают школьников. Как советуют оформить рассрочку на родителей, на друзей, на кого угодно. Лишь бы закрыть сделку. Подходит человеку эта история или нет, никого не волнует. Результат вообще не важен. Важно продать.</p>
+<p>А теперь как это устроено у нас.</p>
+<p>Если у человека свой хороший депозит, мы с ним работаем. Если ему не хватает до минимального депозита, мы отказываем, потому что тогда он 100% сольёт. Мы прямо запрещаем всем брать деньги в долг, чтобы торговать. Никаких кредитов, никаких займов у друзей, никаких последних денег.</p>
+<p class="punch">Так где здесь правда? Кто на самом деле думает о человеке, а кто просто пытается казаться правильным?</p>
+
+<div class="final">
+<p>Можно и дальше повторять чужое мнение. А можно один раз разобраться самому и сформировать своё.</p>
+<p>Я свой выбор сделал уже давно. И первая неделя в <span class="big">40 000$</span> на одном из проектов показывает, что не зря.</p>
+</div>
+</article>
+
+<footer>
+  <span>Больше цифр и разборов в моём канале</span>
+  <a class="btn" href="https://t.me/+jVu_M6BNErI1NjVi">Читать канал</a>
+</footer>
+</main>
+
+<script>
+// Полоса прогресса чтения
+const bar=document.getElementById('progress');
+addEventListener('scroll',()=>{const h=document.documentElement;bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%'},{passive:true});
+
+// Свечной график на фоне шапки
+const c=document.getElementById('candles'),x=c.getContext('2d');
+function draw(){
+  const r=devicePixelRatio||1,w=c.clientWidth,h=c.clientHeight;c.width=w*r;c.height=h*r;x.scale(r,r);
+  let seed=7;const rnd=()=>(seed=(seed*9301+49297)%233280)/233280;
+  const n=Math.ceil(w/14);let p=h*0.7;
+  for(let i=0;i<n;i++){
+    const o=p,cl=o+(rnd()-0.56)*h*0.09;const hi=Math.min(o,cl)-rnd()*h*0.04,lo=Math.max(o,cl)+rnd()*h*0.04;
+    const up=cl<o;x.strokeStyle=x.fillStyle=up?'#2fd08f':'#ff6b80';
+    const cx=i*14+7;x.beginPath();x.moveTo(cx,hi);x.lineTo(cx,lo);x.lineWidth=1;x.stroke();
+    x.fillRect(cx-4,Math.min(o,cl),8,Math.max(2,Math.abs(cl-o)));
+    p=Math.max(h*0.15,Math.min(h*0.9,cl));
+  }
+}
+draw();addEventListener('resize',()=>{x.setTransform(1,0,0,1,0,0);draw()});
+</script>
+</body>
+</html>
